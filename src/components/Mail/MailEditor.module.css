@@ -1,0 +1,19 @@
+.editor {
+  min-height: 17rem;
+  max-height: 17rem;
+  padding: 1rem;
+  margin: 5px 0;
+  border: 1px solid #d3d3d3;
+}
+
+.readOnly {
+  min-height: 17rem;
+  padding: 1rem;
+  margin: 5px 0;
+  border: 1px solid #d3d3d3;
+}
+
+.toolbar {
+  margin: 5px 0;
+  border: 1px solid #d3d3d3;
+}
