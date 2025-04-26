@@ -37,7 +37,7 @@ export default function SignUpForm() {
     dispatch(toggleSpinner(true));
     try {
       const response = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCNcHCnrKiBY3UJe3lIviL1ZRguuvSWCE8',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD4zS31jD6146ZIC7Ghsu4l6hK4Z_7eRps',
         {
           method: 'POST',
           body: JSON.stringify({

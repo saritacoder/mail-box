@@ -9,7 +9,7 @@ export default function SignUp() {
     <AuthCard>
       <div>
         <img className="w-10 mb-4" src={mailIcon} alt="mail icon" />
-        <h1 className="font-normal text-3xl">Create a mail Account</h1>
+        <h1 className="font-normal text-3xl">Create a Rmail Account</h1>
         <h3 className="mt-4">Enter email and password</h3>
       </div>
 

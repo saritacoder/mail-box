@@ -18,7 +18,7 @@ export default function ForgotPasswordForm() {
 
     try {
       const response = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCNcHCnrKiBY3UJe3lIviL1ZRguuvSWCE8',
+        'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyD4zS31jD6146ZIC7Ghsu4l6hK4Z_7eRps',
         {
           method: 'POST',
           body: JSON.stringify({
