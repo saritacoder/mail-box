@@ -1,14 +1,10 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink } from "react-router-dom"
 
 export const navLinkClass = ({ isActive }) => {
   return `block px-2 py-1 rounded-r-2xl border-l-4
-  ${
-    isActive
-      ? 'bg-blue-200 font-semibold border-l-blue-700'
-      : 'hover:bg-blue-100'
-  }
-`;
-};
+  ${isActive ? "bg-blue-200 font-semibold border-l-blue-700" : "hover:bg-blue-100"}
+`
+}
 
 export default function Sidebar(props) {
   return (
@@ -24,11 +20,7 @@ export default function Sidebar(props) {
         <li className="my-2">
           <NavLink className={navLinkClass} to="inbox">
             Inbox
-            {props.unreadMails > 0 && (
-              <span className="float-end mr-7 font-bold">
-                +{props.unreadMails}
-              </span>
-            )}
+            {props.unreadMails > 0 && <span className="float-end mr-7 font-bold">+{props.unreadMails}</span>}
           </NavLink>
         </li>
         <li className="my-2">
@@ -36,12 +28,7 @@ export default function Sidebar(props) {
             Sent
           </NavLink>
         </li>
-        <li className="my-2">
-          <NavLink className={navLinkClass} to="stared">
-            Stared
-          </NavLink>
-        </li>
       </ul>
     </div>
-  );
+  )
 }

@@ -17,7 +17,7 @@ export default function Header() {
     <header className="h-12 shadow-md">
       <div className="w-full flex justify-between items-center py-2 px-5 bg-blue-50 fixed z-30">
         <h1 className="hidden sm:block font-semibold text-2xl text-gray-700">
-          Rmail
+          Mail
         </h1>
         <button
           className="sm:hidden focus:outline-none"

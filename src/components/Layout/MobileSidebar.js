@@ -1,11 +1,13 @@
-import { Link, NavLink } from 'react-router-dom';
+"use client"
 
-import { XmarkIcon } from '../../assets/Icons';
-import { navLinkClass } from './Sidebar';
+import { Link, NavLink } from "react-router-dom"
+
+import { XmarkIcon } from "../../assets/Icons"
+import { navLinkClass } from "./Sidebar"
 
 export default function MobileSidebar(props) {
   function hideSideBar() {
-    document.getElementById('hidden').classList.toggle('hidden');
+    document.getElementById("hidden").classList.toggle("hidden")
   }
 
   return (
@@ -14,7 +16,7 @@ export default function MobileSidebar(props) {
       id="hidden"
     >
       <div className="flex justify-between items-center">
-        <h1 className="font-semibold text-2xl text-gray-700">Rmail</h1>
+        <h1 className="font-semibold text-2xl text-gray-700">mail</h1>
         <button onClick={hideSideBar}>
           <XmarkIcon />
         </button>
@@ -32,11 +34,7 @@ export default function MobileSidebar(props) {
           <li className="my-2">
             <NavLink className={navLinkClass} to="inbox" onClick={hideSideBar}>
               Inbox
-              {props.unreadMails > 0 && (
-                <span className="float-end mr-7 font-bold">
-                  +{props.unreadMails}
-                </span>
-              )}
+              {props.unreadMails > 0 && <span className="float-end mr-7 font-bold">+{props.unreadMails}</span>}
             </NavLink>
           </li>
           <li className="my-2">
@@ -44,13 +42,8 @@ export default function MobileSidebar(props) {
               Sent
             </NavLink>
           </li>
-          <li className="my-2">
-            <NavLink className={navLinkClass} to="stared" onClick={hideSideBar}>
-              Stared
-            </NavLink>
-          </li>
         </ul>
       </div>
     </div>
-  );
+  )
 }

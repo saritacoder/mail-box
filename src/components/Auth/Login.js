@@ -10,7 +10,7 @@ export default function Login() {
       <div>
         <img className="w-10 mb-4" src={mailIcon} alt="mail icon" />
         <h1 className="font-normal text-3xl">Sign in</h1>
-        <h3 className="mt-4">to continue to Rmail</h3>
+        <h3 className="mt-4">to continue to mail</h3>
       </div>
 
       <div className="mt-3 sm:w-80">

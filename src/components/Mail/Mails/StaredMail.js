@@ -1,5 +1,6 @@
-import EmptyTab from '../../UI/EmptyTab';
+import EmptyTab from "../../UI/EmptyTab"
 
 export default function StaredMail() {
-  return <EmptyTab tab="Stared" />;
+  return <EmptyTab tab="Stared" />
 }
+

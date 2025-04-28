@@ -1,92 +1,113 @@
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+"use client"
 
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import styles from '../MailEditor.module.css';
+import { useParams, useNavigate, useLocation } from "react-router-dom"
 
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  deleteReceivedMails,
-  deleteSentMails,
-  markAsUnread,
-} from '../../../reducers/emailSlice';
+import { Editor } from "react-draft-wysiwyg"
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
+import styles from "../MailEditor.module.css"
 
-import { BackArrow, DeleteIcon, MarkAsUnread } from '../../../assets/Icons';
+import { useSelector, useDispatch } from "react-redux"
+import { deleteReceivedMails, deleteSentMails, markAsUnread } from "../../../reducers/emailSlice"
+import { toast } from "react-toastify"
+
+import { BackArrow, DeleteIcon, MarkAsUnread } from "../../../assets/Icons"
 
 export default function MailBody() {
-  const { mailId } = useParams();
+  const { mailId } = useParams()
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  const sentMails = useSelector((state) => state.emailState.sentMails);
-  const receivedMails = useSelector((state) => state.emailState.receivedMails);
-  const { email } = useSelector((state) => state.authState.loggedUser);
+  const sentMails = useSelector((state) => state.emailState.sentMails)
+  const receivedMails = useSelector((state) => state.emailState.receivedMails)
+  const { email } = useSelector((state) => state.authState.loggedUser || {})
 
   if (!sentMails.length && !receivedMails.length) {
-    if (location.pathname.includes('inbox')) navigate('/mail/inbox');
-    if (location.pathname.includes('sent')) navigate('/mail/sent');
-    return;
+    if (location.pathname.includes("inbox")) navigate("/mail/inbox")
+    if (location.pathname.includes("sent")) navigate("/mail/sent")
+    return null
   }
 
-  const allMails = [...sentMails, ...receivedMails];
-  const selectedMail = allMails.find((m) => m.id === mailId);
+  const allMails = [...sentMails, ...receivedMails]
+  const selectedMail = allMails.find((m) => m.id === mailId)
 
   if (!selectedMail) {
-    if (location.pathname.includes('inbox')) navigate('/mail/inbox');
-    if (location.pathname.includes('sent')) navigate('/mail/sent');
-    return;
+    if (location.pathname.includes("inbox")) navigate("/mail/inbox")
+    if (location.pathname.includes("sent")) navigate("/mail/sent")
+    return null
+  }
+
+  // Security check - ensure user can only view their own emails
+  if (location.pathname.includes("inbox") && selectedMail.mail.to !== email) {
+    toast.error("You don't have permission to view this email")
+    navigate("/mail/inbox")
+    return null
+  }
+
+  if (location.pathname.includes("sent") && selectedMail.mail.from !== email) {
+    toast.error("You don't have permission to view this email")
+    navigate("/mail/sent")
+    return null
   }
 
   async function handleDeleteMail() {
-    if (location.pathname.includes('inbox')) {
+    if (location.pathname.includes("inbox")) {
+      // Security check - ensure user can only delete their own emails
+      if (selectedMail.mail.to !== email) {
+        toast.error("You don't have permission to delete this email")
+        return
+      }
+
       const response = await fetch(
-        `https://email-box-5aa50-default-rtdb.firebaseio.com/${email.replace(
-          '.',
-          ''
-        )}/receivedMails/${mailId}.json`,
+        `https://email-box-5aa50-default-rtdb.firebaseio.com/${email.replace(".", "")}/receivedMails/${mailId}.json`,
         {
-          method: 'DELETE',
-        }
-      );
+          method: "DELETE",
+        },
+      )
       if (response.ok) {
-        dispatch(deleteReceivedMails(mailId));
-        navigate('/mail/inbox');
+        dispatch(deleteReceivedMails(mailId))
+        navigate("/mail/inbox")
       }
     }
 
-    if (location.pathname.includes('sent')) {
+    if (location.pathname.includes("sent")) {
+      // Security check - ensure user can only delete their own emails
+      if (selectedMail.mail.from !== email) {
+        toast.error("You don't have permission to delete this email")
+        return
+      }
+
       const response = await fetch(
-        `https://email-box-5aa50-default-rtdb.firebaseio.com/${email.replace(
-          '.',
-          ''
-        )}/sentMails/${mailId}.json`,
+        `https://email-box-5aa50-default-rtdb.firebaseio.com/${email.replace(".", "")}/sentMails/${mailId}.json`,
         {
-          method: 'DELETE',
-        }
-      );
+          method: "DELETE",
+        },
+      )
       if (response.ok) {
-        dispatch(deleteSentMails(mailId));
-        navigate('/mail/sent');
+        dispatch(deleteSentMails(mailId))
+        navigate("/mail/sent")
       }
     }
   }
 
   async function handleMarkAsUnread() {
+    // Security check - ensure user can only mark their own emails
+    if (selectedMail.mail.to !== email) {
+      toast.error("You don't have permission to modify this email")
+      return
+    }
+
     if (selectedMail.mail.read === true) {
       const response = await fetch(
-        `https://email-box-5aa50-default-rtdb.firebaseio.com/${email.replace(
-          '.',
-          ''
-        )}/receivedMails/${mailId}.json`,
+        `https://email-box-5aa50-default-rtdb.firebaseio.com/${email.replace(".", "")}/receivedMails/${mailId}.json`,
         {
-          method: 'PUT',
+          method: "PUT",
           body: JSON.stringify({ ...selectedMail.mail, read: false }),
-        }
-      );
+        },
+      )
       if (response.ok) {
-        dispatch(markAsUnread(mailId));
+        dispatch(markAsUnread(mailId))
       }
     }
   }
@@ -101,7 +122,7 @@ export default function MailBody() {
           <BackArrow className="w-6" />
         </button>
         <div className="flex items-center">
-          {location.pathname.includes('inbox') && (
+          {location.pathname.includes("inbox") && (
             <button
               className="rounded-full p-2 hover:bg-gray-100 active:bg-gray-200 duration-300"
               onClick={handleMarkAsUnread}
@@ -121,9 +142,7 @@ export default function MailBody() {
         <div className="mb-5 mt-2">
           <h1 className="text-xlfont-medium">{selectedMail.mail.subject}</h1>
           <p className="text-sm text-slate-700">
-            {location.pathname.includes('inbox')
-              ? `<${selectedMail.mail.from}>`
-              : `<${selectedMail.mail.to}>`}
+            {location.pathname.includes("inbox") ? `<${selectedMail.mail.from}>` : `<${selectedMail.mail.to}>`}
           </p>
         </div>
         <Editor
@@ -134,5 +153,5 @@ export default function MailBody() {
         />
       </section>
     </div>
-  );
+  )
 }
