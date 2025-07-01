@@ -42,21 +42,17 @@ const AuthContainer = ({ onGuestLogin }) => {
         return <ForgotPassword onBackToLogin={() => setCurrentView("login")} />
       default:
         return (
-          <Login
-            onSwitchToSignup={() => setCurrentView("signup")}
-            onSwitchToForgot={() => setCurrentView("forgot")}
-            onGuestLogin={onGuestLogin}
-          />
+          <Login onSwitchToSignup={() => setCurrentView("signup")} onSwitchToForgot={() => setCurrentView("forgot")} />
         )
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-teal-400 via-cyan-300 to-pink-400">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-teal-400 via-cyan-300 to-pink-400 z-0">
       {/* No AnimatedBackground here - only static gradient for auth pages */}
 
       {/* Auth Card */}
-      <div className="relative z-10 w-full max-w-4xl mx-4">
+      <div className="relative z-50 w-full max-w-4xl mx-4">
         {loading ? (
           <div className="flex items-center justify-center p-12 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/30 shadow-2xl">
             <div className="flex flex-col items-center gap-6">
@@ -65,7 +61,9 @@ const AuthContainer = ({ onGuestLogin }) => {
             </div>
           </div>
         ) : (
-          <div className="transform transition-all duration-500 hover:scale-[1.01]">{renderCurrentView()}</div>
+          <div className="transform transition-all duration-500 hover:scale-[1.01] relative z-50 bg-transparent">
+            {renderCurrentView()}
+          </div>
         )}
       </div>
     </div>

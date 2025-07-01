@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import { setUser, setToken, setLoading } from "../../redux/authSlice"
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useSelector((state) => state.auth)
+  const { isAuthenticated, loading, user } = useSelector((state) => state.auth)
   const [guestMode, setGuestMode] = useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -37,6 +38,11 @@ const ProtectedRoute = ({ children }) => {
               dispatch(setToken(storedToken))
               dispatch(setUser(userData))
               console.log("User authenticated from localStorage") // Debug log
+
+              // Navigate to inbox after successful authentication
+              setTimeout(() => {
+                navigate("/inbox", { replace: true })
+              }, 100)
             } else {
               // Token might be expired, clear storage
               localStorage.removeItem("authToken")
@@ -63,7 +69,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
     checkAuthentication()
-  }, [dispatch])
+  }, [dispatch, navigate])
 
   // Show loading while checking authentication
   if (loading) {
