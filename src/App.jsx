@@ -36,12 +36,12 @@ const ErrorBoundary = ({ error }) => {
   )
 }
 
-// Main App Layout with Background
+// Main App Layout with Background (only for non-auth pages)
 const AppLayout = ({ children }) => {
   return (
     <div className="relative min-h-screen">
       <AnimatedBackground />
-      <div className="relative z-10 bg-[#F6F8FC] min-h-screen w-full">
+      <div className="relative z-10 min-h-screen w-full">
         <Navbar />
         {children}
         <SendMail />

@@ -96,19 +96,21 @@ const Sidebar = () => {
       <div
         key={index}
         onClick={() => handleItemClick(item)}
-        className={`flex items-center justify-between pl-4 py-1 rounded-r-full hover:cursor-pointer hover:bg-gray-200 my-1 transition-all duration-500 transform ${
-          currentView === item.view ? "bg-blue-100 text-blue-600 font-medium" : "text-gray-600 hover:text-gray-800"
-        } ${isAnimated ? "translate-x-0 opacity-100" : "translate-x-[-30px] opacity-0"}`}
+        className={`flex items-center justify-between pl-4 py-1 rounded-r-full hover:cursor-pointer hover:bg-gray-200/40 my-1 transition-all duration-500 transform ${
+          currentView === item.view
+            ? "bg-blue-100/60 text-blue-600 font-medium backdrop-blur-sm"
+            : "text-gray-600 hover:text-gray-800"
+        } ${isAnimated ? "translate-x-0 opacity-100" : "translate-x-[-30px] opacity-0"} gmail-text-medium`}
         style={{
           transitionDelay: isInitialLoad && !isAnimated ? `${index * 300}ms` : "0ms",
         }}
       >
         <div className="flex items-center gap-2">
           {item.icon}
-          <p>{item.text}</p>
+          <p className="gmail-text-medium">{item.text}</p>
         </div>
         {item.view === "inbox" && unreadCount > 0 && (
-          <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 mr-4 min-w-[20px] text-center animate-pulse">
+          <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 mr-4 min-w-[20px] text-center animate-pulse font-medium">
             {unreadCount}
           </span>
         )}
@@ -117,11 +119,11 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="w-[20%] min-w-[180px]">
+    <div className="w-[20%] min-w-[180px] bg-white/60 backdrop-blur-sm">
       <div className="p-3">
         <button
           onClick={() => dispatch(setOpen(true))}
-          className="flex items-center gap-2 p-4 rounded-2xl hover:shadow-md bg-[#C2E7FF] transition-all duration-300 transform hover:scale-105"
+          className="flex items-center gap-2 p-4 rounded-2xl hover:shadow-md bg-[#C2E7FF]/80 backdrop-blur-sm transition-all duration-300 transform hover:scale-105 gmail-text-medium font-medium"
         >
           <LuPencil size="20px" />
           Compose
@@ -133,7 +135,7 @@ const Sidebar = () => {
 
         <div
           onClick={toggleMore}
-          className="flex items-center gap-2 pl-4 py-1 rounded-r-full hover:cursor-pointer hover:bg-gray-200 my-1 text-gray-600 hover:text-gray-800 transition-colors"
+          className="flex items-center gap-2 pl-4 py-1 rounded-r-full hover:cursor-pointer hover:bg-gray-200/40 my-1 text-gray-600 hover:text-gray-800 transition-colors gmail-text-medium"
         >
           {showMore ? <MdExpandLess size="20px" /> : <MdExpandMore size="20px" />}
           <p>{showMore ? "Less" : "More"}</p>

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Animated Background Styles */
+/* CodeSandbox Background Animation - Exact Implementation */
 :root {
   --color-bg1: #dff9fb;
   --color-bg2: #ffffff;
@@ -54,96 +54,80 @@
   width: 100vw;
   height: 100vh;
   position: fixed;
-  top: 0;
-  left: 0;
   overflow: hidden;
   background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
-  z-index: -1;
+  top: 0;
+  left: 0;
+  z-index: -10;
 }
 
 .gradient-bg svg {
   display: none;
 }
 
-.gradient-bg .gradients-container {
+.gradients-container {
   filter: url(#goo) blur(40px);
   width: 100%;
   height: 100%;
 }
 
-.gradient-bg .g1 {
+.g1,
+.g2,
+.g3,
+.g4,
+.g5 {
   position: absolute;
-  background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%) no-repeat;
-  mix-blend-mode: var(--blending);
   width: var(--circle-size);
   height: var(--circle-size);
   top: calc(50% - var(--circle-size) / 2);
   left: calc(50% - var(--circle-size) / 2);
-  transform-origin: center center;
-  animation: moveVertical 30s ease infinite;
+  mix-blend-mode: var(--blending);
   opacity: 1;
 }
 
-.gradient-bg .g2 {
-  position: absolute;
-  background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%) no-repeat;
-  mix-blend-mode: var(--blending);
-  width: var(--circle-size);
-  height: var(--circle-size);
-  top: calc(50% - var(--circle-size) / 2);
-  left: calc(50% - var(--circle-size) / 2);
+.g1 {
+  background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%);
+  animation: moveVertical 30s ease infinite;
+}
+
+.g2 {
+  background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%);
   transform-origin: calc(50% - 400px);
   animation: moveInCircle 20s reverse infinite;
-  opacity: 1;
 }
 
-.gradient-bg .g3 {
-  position: absolute;
-  background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%) no-repeat;
-  mix-blend-mode: var(--blending);
-  width: var(--circle-size);
-  height: var(--circle-size);
+.g3 {
+  background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%);
   top: calc(50% - var(--circle-size) / 2 + 200px);
   left: calc(50% - var(--circle-size) / 2 - 500px);
   transform-origin: calc(50% + 400px);
   animation: moveInCircle 40s linear infinite;
-  opacity: 1;
 }
 
-.gradient-bg .g4 {
-  position: absolute;
-  background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%) no-repeat;
-  mix-blend-mode: var(--blending);
-  width: var(--circle-size);
-  height: var(--circle-size);
-  top: calc(50% - var(--circle-size) / 2);
-  left: calc(50% - var(--circle-size) / 2);
+.g4 {
+  background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%);
   transform-origin: calc(50% - 200px);
   animation: moveHorizontal 40s ease infinite;
   opacity: 0.7;
 }
 
-.gradient-bg .g5 {
-  position: absolute;
-  background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 50%) no-repeat;
-  mix-blend-mode: var(--blending);
+.g5 {
+  background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 50%);
   width: calc(var(--circle-size) * 2);
   height: calc(var(--circle-size) * 2);
   top: calc(50% - var(--circle-size));
   left: calc(50% - var(--circle-size));
   transform-origin: calc(50% - 800px) calc(50% + 200px);
   animation: moveInCircle 20s ease infinite;
-  opacity: 1;
 }
 
-.gradient-bg .interactive {
+.interactive {
   position: absolute;
   background: radial-gradient(
-      circle at center,
-      rgba(var(--color-interactive), 0.8) 0,
-      rgba(var(--color-interactive), 0) 50%
-    )
-    no-repeat;
+    circle at center,
+    rgba(var(--color-interactive), 0.8) 0,
+    rgba(var(--color-interactive), 0) 50%
+  );
   mix-blend-mode: var(--blending);
   width: 100%;
   height: 100%;
@@ -307,3 +291,20 @@
 .border-3 {
   border-width: 3px;
 }
+
+/* Gmail-like styling with heavier text */
+.gmail-text-heavy {
+  font-weight: 500 !important;
+  color: #202124 !important;
+}
+
+.gmail-text-medium {
+  font-weight: 400 !important;
+  color: #3c4043 !important;
+}
+
+.gmail-text-light {
+  font-weight: 400 !important;
+  color: #5f6368 !important;
+}
+

@@ -53,6 +53,8 @@ const AuthContainer = ({ onGuestLogin }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-teal-400 via-cyan-300 to-pink-400">
+      {/* No AnimatedBackground here - only static gradient for auth pages */}
+
       {/* Auth Card */}
       <div className="relative z-10 w-full max-w-4xl mx-4">
         {loading ? (

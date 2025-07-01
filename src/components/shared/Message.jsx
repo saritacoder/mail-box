@@ -134,8 +134,8 @@ const Message = ({ email, onEmailUpdate }) => {
   return (
     <div
       onClick={openMail}
-      className={`flex items-start justify-between border-b border-gray-200 px-4 py-3 text-sm hover:cursor-pointer hover:shadow-md transition-all group ${
-        isUnread ? "bg-white" : "bg-gray-50"
+      className={`flex items-start justify-between border-b border-gray-200/40 px-4 py-3 text-sm hover:cursor-pointer hover:shadow-md transition-all group ${
+        isUnread ? "bg-white/70 backdrop-blur-sm" : "bg-gray-50/50 backdrop-blur-sm"
       }`}
     >
       <div className="flex items-center gap-3">
@@ -158,20 +158,28 @@ const Message = ({ email, onEmailUpdate }) => {
         <div className="flex items-center gap-2">
           {/* Blue dot for unread emails */}
           {isUnread && <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>}
-          <span className={`${isUnread ? "font-semibold text-black" : "text-gray-500"}`}>{getDisplayName()}</span>
+          <span
+            className={`${isUnread ? "font-semibold text-black gmail-text-heavy" : "text-gray-500 gmail-text-medium"}`}
+          >
+            {getDisplayName()}
+          </span>
           {email.from === user?.email && (
             <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">Sent</span>
           )}
           {isUnread && <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">New</span>}
         </div>
-        <p className={`truncate ${isUnread ? "text-black" : "text-gray-500"}`}>
-          <span className={`${isUnread ? "font-semibold" : ""}`}>{email.subject}</span>
-          <span className="text-gray-500 ml-2">- {truncateText(email.message)}</span>
+        <p className={`truncate ${isUnread ? "text-black gmail-text-medium" : "text-gray-500 gmail-text-light"}`}>
+          <span className={`${isUnread ? "font-semibold gmail-text-heavy" : "gmail-text-medium"}`}>
+            {email.subject}
+          </span>
+          <span className="text-gray-500 ml-2 gmail-text-light">- {truncateText(email.message)}</span>
         </p>
       </div>
 
       <div className="flex items-center gap-2 ml-4">
-        <div className={`flex-none text-sm ${isUnread ? "text-black font-medium" : "text-gray-400"}`}>
+        <div
+          className={`flex-none text-sm ${isUnread ? "text-black font-medium gmail-text-medium" : "text-gray-400 gmail-text-light"}`}
+        >
           {formatTime(email.timestamp)}
         </div>
       </div>

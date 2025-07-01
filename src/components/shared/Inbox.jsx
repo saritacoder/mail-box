@@ -86,7 +86,7 @@ const Inbox = () => {
   // Show loading if user is not available yet
   if (!user) {
     return (
-      <div className="flex-1 bg-white rounded-xl mx-5 flex items-center justify-center">
+      <div className="flex-1 bg-white/60 backdrop-blur-sm flex items-center justify-center">
         <div className="flex items-center gap-3">
           <div className="w-5 h-5 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
           <span className="text-gray-600">Loading...</span>
@@ -96,28 +96,28 @@ const Inbox = () => {
   }
 
   return (
-    <div className="flex-1 bg-white rounded-xl mx-5">
+    <div className="flex-1 bg-white/60 backdrop-blur-sm shadow-sm">
       <div className="flex items-center justify-between px-4">
         <div className="flex items-center gap-2 text-gray-700 py-2">
           <div className="flex items-center gap-1">
             <MdCropSquare size={"20px"} />
             <FaCaretDown size={"20px"} />
           </div>
-          <div className="p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+          <div className="p-2 rounded-full hover:bg-gray-100/40 cursor-pointer">
             <IoMdRefresh size={"20px"} />
           </div>
-          <div className="p-2 rounded-full hover:bg-gray-100 cursor-pointer">
+          <div className="p-2 rounded-full hover:bg-gray-100/40 cursor-pointer">
             <IoMdMore size={"20px"} />
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 gmail-text-light">
             {getEmailCount() > 0 ? `1-${Math.min(50, getEmailCount())} of ${getEmailCount()}` : "0 emails"}
           </p>
-          <button disabled={false} className="hover:rounded-full hover:bg-gray-100">
+          <button disabled={false} className="hover:rounded-full hover:bg-gray-100/40">
             <MdKeyboardArrowLeft size={"24px"} />
           </button>
-          <button disabled={false} className="hover:rounded-full hover:bg-gray-100">
+          <button disabled={false} className="hover:rounded-full hover:bg-gray-100/40">
             <MdKeyboardArrowRight size={"24px"} />
           </button>
         </div>
@@ -130,7 +130,7 @@ const Inbox = () => {
             {mailType.map((item, index) => (
               <button
                 key={index}
-                className={`flex items-center gap-5 p-4 ${mailTypeSelected === index ? "border-b-4 border-b-blue-600 text-blue-600" : "border-b-4 border-b-transparent"} w-52 hover:bg-gray-100`}
+                className={`flex items-center gap-5 p-4 ${mailTypeSelected === index ? "border-b-4 border-b-blue-600 text-blue-600" : "border-b-4 border-b-transparent"} w-52 hover:bg-gray-100/40 gmail-text-medium font-medium`}
                 onClick={() => {
                   setMailTypeSelected(index)
                 }}
@@ -143,11 +143,13 @@ const Inbox = () => {
         )}
 
         {/* View Title */}
-        <div className="px-4 py-2 border-b">
+        <div className="px-4 py-2 border-b border-gray-200/40">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-medium text-gray-800">{getViewTitle()}</h2>
+            <h2 className="text-lg font-medium text-gray-800 gmail-text-heavy">{getViewTitle()}</h2>
             {user.isGuest && (
-              <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Guest Mode</span>
+              <span className="text-xs bg-yellow-100/80 text-yellow-800 px-2 py-1 rounded-full backdrop-blur-sm">
+                Guest Mode
+              </span>
             )}
           </div>
         </div>
