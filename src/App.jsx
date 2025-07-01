@@ -1,6 +1,6 @@
 "use client"
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import "./App.css"
 import Navbar from "./components/shared/Navbar"
 import Body from "./components/shared/Body"
@@ -9,6 +9,8 @@ import Mail from "./components/shared/Mail"
 import SendMail from "./components/shared/SendMail"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
 import UserProfile from "./components/shared/UserProfile"
+import AuthContainer from "./components/auth/AuthContainer"
+import AnimatedBackground from "./components/shared/AnimatedBackground"
 
 // Error Boundary Component
 const ErrorBoundary = ({ error }) => {
@@ -34,14 +36,63 @@ const ErrorBoundary = ({ error }) => {
   )
 }
 
+// Main App Layout with Background
+const AppLayout = ({ children }) => {
+  return (
+    <div className="relative min-h-screen">
+      <AnimatedBackground />
+      <div className="relative z-10 bg-[#F6F8FC] min-h-screen w-full">
+        <Navbar />
+        {children}
+        <SendMail />
+      </div>
+    </div>
+  )
+}
+
 const router = createBrowserRouter([
   {
+    path: "/login",
+    element: <AuthContainer />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
     path: "/",
-    element: <Body />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout>
+          <Body />
+        </AppLayout>
+      </ProtectedRoute>
+    ),
     errorElement: <ErrorBoundary />,
     children: [
       {
         path: "/",
+        element: <Navigate to="/inbox" replace />,
+      },
+      {
+        path: "/inbox",
+        element: <Inbox />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "/sent",
+        element: <Inbox />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "/starred",
+        element: <Inbox />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "/trash",
+        element: <Inbox />,
+        errorElement: <ErrorBoundary />,
+      },
+      {
+        path: "/all",
         element: <Inbox />,
         errorElement: <ErrorBoundary />,
       },
@@ -60,17 +111,7 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  return (
-    <ProtectedRoute>
-      <div className="bg-[#F6F8FC] min-h-screen w-full">
-        <Navbar />
-        <RouterProvider router={router} />
-        <div>
-          <SendMail />
-        </div>
-      </div>
-    </ProtectedRoute>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App
