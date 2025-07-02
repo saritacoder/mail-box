@@ -7,7 +7,8 @@ import { setUser, setToken, setLoading } from "../../redux/authSlice"
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading, user } = useSelector((state) => state.auth)
-  const [guestMode, setGuestMode] = useState(false)
+  const [initialCheck, setInitialCheck] = useState(true)
+  const [hasStoredAuth, setHasStoredAuth] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -24,7 +25,10 @@ const ProtectedRoute = ({ children }) => {
         console.log("Stored token:", !!storedToken) // Debug log
         console.log("Stored user data:", !!storedUserData) // Debug log
 
+        // Set hasStoredAuth immediately if we have stored data
         if (storedToken && storedUserData) {
+          setHasStoredAuth(true)
+
           try {
             const userData = JSON.parse(storedUserData)
             console.log("Parsed user data:", userData) // Debug log
@@ -38,16 +42,12 @@ const ProtectedRoute = ({ children }) => {
               dispatch(setToken(storedToken))
               dispatch(setUser(userData))
               console.log("User authenticated from localStorage") // Debug log
-
-              // Navigate to inbox after successful authentication
-              setTimeout(() => {
-                navigate("/inbox", { replace: true })
-              }, 100)
             } else {
               // Token might be expired, clear storage
               localStorage.removeItem("authToken")
               localStorage.removeItem("userData")
               dispatch(setUser(null))
+              setHasStoredAuth(false)
             }
           } catch (error) {
             console.log("Error parsing stored data:", error) // Debug log
@@ -55,24 +55,35 @@ const ProtectedRoute = ({ children }) => {
             localStorage.removeItem("authToken")
             localStorage.removeItem("userData")
             dispatch(setUser(null))
+            setHasStoredAuth(false)
           }
         } else {
           console.log("No stored authentication data found") // Debug log
           dispatch(setUser(null))
+          setHasStoredAuth(false)
         }
       } catch (error) {
         console.error("Authentication check error:", error)
         dispatch(setUser(null))
+        setHasStoredAuth(false)
       }
 
       dispatch(setLoading(false))
+      setInitialCheck(false)
     }
 
-    checkAuthentication()
-  }, [dispatch, navigate])
+    if (initialCheck) {
+      // Check for stored auth immediately on mount
+      const storedToken = localStorage.getItem("authToken")
+      const storedUserData = localStorage.getItem("userData")
+      setHasStoredAuth(!!(storedToken && storedUserData))
 
-  // Show loading while checking authentication
-  if (loading) {
+      checkAuthentication()
+    }
+  }, [dispatch, initialCheck])
+
+  // Show loading while checking authentication OR if we have stored auth data but haven't verified it yet
+  if (loading || initialCheck || (hasStoredAuth && !isAuthenticated)) {
     console.log("Showing loading screen") // Debug log
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-400 via-cyan-300 to-pink-400">
@@ -84,15 +95,15 @@ const ProtectedRoute = ({ children }) => {
     )
   }
 
-  console.log("Auth check complete - isAuthenticated:", isAuthenticated, "guestMode:", guestMode) // Debug log
+  console.log("Auth check complete - isAuthenticated:", isAuthenticated, "hasStoredAuth:", hasStoredAuth) // Debug log
 
-  // Show auth container if not authenticated and not in guest mode
-  if (!isAuthenticated && !guestMode) {
+  // Only redirect to login if we're sure there's no authentication data
+  if (!isAuthenticated && !hasStoredAuth) {
     console.log("Redirecting to login") // Debug log
     return <Navigate to="/login" replace />
   }
 
-  // Show main app if authenticated or in guest mode
+  // Show main app if authenticated
   console.log("Showing main application") // Debug log
   return children
 }

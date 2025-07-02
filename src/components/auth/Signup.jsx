@@ -17,10 +17,19 @@ const Signup = ({ onSwitchToLogin }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [signupSuccess, setSignupSuccess] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
-  const { loading, error } = useSelector((state) => state.auth)
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth)
+
+  // Navigate to inbox when authentication is successful
+  useEffect(() => {
+    if (isAuthenticated && !loading) {
+      console.log("User authenticated via signup, navigating to inbox")
+      navigate("/inbox", { replace: true })
+    }
+  }, [isAuthenticated, loading, navigate])
 
   useEffect(() => {
     // Clear error after 3 seconds
@@ -96,19 +105,6 @@ const Signup = ({ onSwitchToLogin }) => {
           body: JSON.stringify(userData),
         })
 
-        // Replace this section after successful signup:
-        // Update Redux state
-        // dispatch(setUser(userData))
-        // localStorage.setItem("userData", JSON.stringify(userData))
-
-        // Show success message and navigate to inbox
-        // setSignupSuccess(true)
-
-        // setTimeout(() => {
-        //   navigate("/inbox", { replace: true })
-        // }, 2000)
-
-        // With this:
         // Show success message and prepare for redirect
         setSignupSuccess(true)
 
@@ -131,7 +127,7 @@ const Signup = ({ onSwitchToLogin }) => {
   }
 
   const handleGoogleSignup = async () => {
-    dispatch(setLoading(true))
+    setGoogleLoading(true)
     dispatch(clearError())
 
     try {
@@ -179,8 +175,9 @@ const Signup = ({ onSwitchToLogin }) => {
           dispatch(setUser(updatedUserData))
           localStorage.setItem("userData", JSON.stringify(updatedUserData))
 
-          // Navigate to inbox
-          navigate("/inbox", { replace: true })
+          // Navigation will happen automatically via useEffect
+          console.log("Existing user Google signup completed, waiting for state update")
+          setGoogleLoading(false)
           return
         }
       }
@@ -194,12 +191,12 @@ const Signup = ({ onSwitchToLogin }) => {
         body: JSON.stringify(userData),
       })
 
-      // Update Redux state
+      // Update Redux state and localStorage
       dispatch(setUser(userData))
       localStorage.setItem("userData", JSON.stringify(userData))
 
-      // Navigate to inbox
-      navigate("/inbox", { replace: true })
+      // Navigation will happen automatically via useEffect
+      console.log("New user Google signup completed, waiting for state update")
     } catch (error) {
       if (error.code === "auth/popup-closed-by-user") {
         dispatch(setError("Google sign-up was cancelled"))
@@ -210,7 +207,7 @@ const Signup = ({ onSwitchToLogin }) => {
       }
     }
 
-    dispatch(setLoading(false))
+    setGoogleLoading(false)
   }
 
   // Show success message after signup
@@ -224,7 +221,6 @@ const Signup = ({ onSwitchToLogin }) => {
             </svg>
           </div>
           <h2 className="text-lg font-bold text-gray-800 mb-2">Account Created!</h2>
-          {/* Replace success message text */}
           <p className="text-xs text-gray-500 mb-4">Redirecting to login page...</p>
           <div className="flex items-center justify-center">
             <div className="w-4 h-4 border-2 border-teal-500/30 border-t-teal-500 rounded-full animate-spin"></div>
@@ -360,11 +356,20 @@ const Signup = ({ onSwitchToLogin }) => {
 
         <button
           onClick={handleGoogleSignup}
-          disabled={loading}
+          disabled={googleLoading}
           className="w-full flex items-center justify-center gap-2 p-3 border border-gray-300 rounded hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 transform hover:scale-[1.02] active:scale-[0.98] relative z-[9999] bg-white"
         >
-          <FcGoogle size={16} />
-          <span className="text-gray-700 text-xs font-medium">Continue with Google</span>
+          {googleLoading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+              <span className="text-gray-700 text-xs font-medium">Connecting...</span>
+            </>
+          ) : (
+            <>
+              <FcGoogle size={16} />
+              <span className="text-gray-700 text-xs font-medium">Continue with Google</span>
+            </>
+          )}
         </button>
       </div>
     </div>
