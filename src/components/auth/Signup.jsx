@@ -377,3 +377,21 @@ const Signup = ({ onSwitchToLogin }) => {
 }
 
 export default Signup
+
+
+
+
+
+
+// [isAuthenticated, loading, navigate]) // why navigate passed here
+
+// const navigate = useNavigate()
+// which is a hook from React Router v6.
+
+// Even though navigate is usually stable (doesn’t change between renders), it's still recommended to include it in the dependency array because:
+
+//  ESLint warning prevention
+// React's exhaustive-deps rule in ESLint will warn you if you don't include all variables used inside the effect, including navigate.
+
+
+

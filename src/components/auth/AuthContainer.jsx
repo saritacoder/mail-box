@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -7,7 +7,7 @@ import Login from "./Login"
 import Signup from "./Signup"
 import ForgotPassword from "./ForgotPassword"
 
-const AuthContainer = ({ onGuestLogin }) => {
+const AuthContainer = () => {
   const [currentView, setCurrentView] = useState("login")
   const dispatch = useDispatch()
   const { loading } = useSelector((state) => state.auth)
@@ -71,3 +71,22 @@ const AuthContainer = ({ onGuestLogin }) => {
 }
 
 export default AuthContainer
+
+
+
+
+
+
+
+
+
+
+
+// // now if i loggden then no need to login again i can directly logged in 
+
+
+// // The app won’t remember the user even if they already signed up or logged in earlier.
+
+// // Users will have to log in again every time they refresh the page or reopen the app.
+
+// // Your auth system becomes stateless and disconnected.
